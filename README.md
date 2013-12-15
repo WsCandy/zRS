@@ -19,17 +19,17 @@ Implementation:
 
 Use the following HTML structure when implementing the slider to your webpage.
 
-<div class="slider"> <!-- The element the slider needs to be called on -->
-	<div class="inner-slider"> <!-- Inner slider is necessary to make the plugin function correctly, make sure this is 100% width if you want it responsive! -->
-		<img src="img/trans/1.jpg" alt="Tester" />
-		<img src="img/trans/2.jpg" alt="Tester" />
-		<img src="img/trans/3.jpg" alt="Tester" />
-		<img src="img/trans/4.jpg" alt="Tester" />
-		<img src="img/trans/5.jpg" alt="Tester" />
-		<img src="img/trans/6.jpg" alt="Tester" />
-		<img src="img/trans/7.jpg" alt="Tester" />
-		<img src="img/trans/8.jpg" alt="Tester" />
+	<div class="slider"> <!-- The element the slider needs to be called on -->
+		<div class="inner-slider"> <!-- Inner slider is necessary to make the plugin function correctly, make sure this is 100% width if you want it responsive! -->
+			<img src="img/trans/1.jpg" alt="Tester" />
+			<img src="img/trans/2.jpg" alt="Tester" />
+			<img src="img/trans/3.jpg" alt="Tester" />
+			<img src="img/trans/4.jpg" alt="Tester" />
+			<img src="img/trans/5.jpg" alt="Tester" />
+			<img src="img/trans/6.jpg" alt="Tester" />
+			<img src="img/trans/7.jpg" alt="Tester" />
+			<img src="img/trans/8.jpg" alt="Tester" />
+		</div>
 	</div>
-</div>
 
 I'll add more at some point... 
