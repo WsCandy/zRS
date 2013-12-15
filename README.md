@@ -3,17 +3,17 @@ zRS - Responsive Slider
 
 Here's a list of options with all their defualt values:
 
-speed : 1000
-delay : 0
-pager : 'undefined'
-slideSpacing: 0
-next : $('.next', this)
-prev : $('.prev', this)
-visibleSlides : 1
-transition: 'slide'
-pauseOnHover : false
-trans_callback : null
-load_callback : null
+	speed : 1000
+	delay : 0
+	pager : 'undefined'
+	slideSpacing: 0
+	next : $('.next', this)
+	prev : $('.prev', this)
+	visibleSlides : 1
+	transition: 'slide'
+	pauseOnHover : false
+	trans_callback : null
+	load_callback : null
 
 Implementation:
 
