@@ -26,9 +26,10 @@ $(document).ready(function(){
 
 		speed : 1000,
 		delay: 4000,
-		transition: 'vertical',
+		transition: 'fade',
 		pauseOnHover : true,
-		visibleSlides : 1
+		visibleSlides : 1,
+		adjustWidth: false
 
 	});
 

@@ -19,7 +19,9 @@
 				transition: 'slide',
 				pauseOnHover : false,
 				trans_callback : null,
-				load_callback : null
+				load_callback : null, 
+				adjustWidth : true,
+				fixed : false
 
 			};
 
@@ -27,11 +29,13 @@
 
 			if(typeof(options) == 'object') {
 				
+				self.data('settings', settings);
 				self.data('savedSettings', settings.delay);
 				self.data('visibleSlides', settings.visibleSlides);
 
 			} else {
 
+				settings = self.data('settings');
 				settings.delay = self.data('savedSettings');			
 			}
 
@@ -71,11 +75,17 @@
 
 						}
 
+						if(settings.adjustWidth == false && settings.transition != 'fade') {
+
+							throw 'You need to use fade with no width adjust!';
+
+						}
+
 					}
 
 					catch(error) {
 
-						console.log('[Zizzi Fluid Slider Shutting Down] - '+error);
+						console.log('[Fluid Slider Shutting Down] - '+error);
 
 					}
 
@@ -94,48 +104,64 @@
 					var carouselWidth = numberOfSlides * inner.width() / self.data('visibleSlides');
 					var carouselHeight = numberOfSlides * inner.outerHeight() / self.data('visibleSlides');
 
-					carousel.css({
+					if(settings.adjustWidth == true) {
 
-						'width' : settings.transition == 'slide' ? carouselWidth + 'px' : inner.width(),
-						'position' : 'relative'
+						carousel.css({
 
-					}).css({
+							'width' : settings.transition == 'slide' ? carouselWidth + 'px' : inner.width(),
+							'position' : 'relative'
 
-						'width' : self.data('visibleSlides') == 1 ? '+='+numberOfSlides * settings.slideSpacing + 'px' : '+=' + 1 + 'px'
+						}).css({
 
-					});					
+							'width' : self.data('visibleSlides') == 1 && settings.transition != 'vertical' ? '+='+numberOfSlides * settings.slideSpacing + 'px' : '+=' + 1 + 'px'
 
-					var widthValue = (100 / numberOfSlides) / 100;
+						});					
 
-					if(settings.transition == 'vertical') {
+						var widthValue = (100 / numberOfSlides) / 100;
 
-						slides.css({
+						if(settings.transition == 'vertical') {
 
-							'width' : '100%',
-							'margin-top' : settings.slideSpacing /2 + 'px',
-							'margin-bottom' : settings.slideSpacing /2 + 'px'
+							slides.css({
 
-						});
+								'padding-top' : settings.slideSpacing /2 + 'px',
+								'padding-bottom' : settings.slideSpacing /2 + 'px'
+
+							});
+
+						} else {
+
+							slides.css({
+
+								'width' : self.data('visibleSlides') == 1 ? carouselWidth * widthValue + 'px' : (carouselWidth * widthValue) - settings.slideSpacing + 'px',
+								'margin-right' : settings.slideSpacing /2 + 'px',
+								'margin-left' : settings.slideSpacing /2 + 'px'
+
+							});
+
+						}
+
+						if(settings.transition == 'vertical') {
+
+							inner.css({
+
+								'height' : self.data('visibleSlides') == 1 ? slides.outerHeight(true) * self.data('visibleSlides') + 'px' : (slides.outerHeight(true) + settings.slideSpacing) * self.data('visibleSlides')
+
+							});
+
+						}
 
 					} else {
 
+						if(inner.width() < slides.width()) {
+
 						slides.css({
 
-							'width' : self.data('visibleSlides') == 1 ? carouselWidth * widthValue + 'px' : (carouselWidth * widthValue) - settings.slideSpacing + 'px',
-							'margin-right' : settings.slideSpacing /2 + 'px',
-							'margin-left' : settings.slideSpacing /2 + 'px'
+							'left' : '50%',
+							'margin-left' : '-' + slides.width() / 2 + 'px'
 
 						});
-
-					}
-
-					if(settings.transition == 'vertical') {
-
-						inner.css({
-
-							'height' : self.data('visibleSlides') == 1 ? slides.outerHeight() * self.data('visibleSlides') + 'px' : (slides.outerHeight() + settings.slideSpacing) * self.data('visibleSlides')
-
-						});
+							
+						}
 
 					}
 
@@ -151,7 +177,7 @@
 
 					} else {
 
-						currentSlide = self.data('currentSlide');
+						currentSlide = self.data('currentSlide') == undefined ? 0 : self.data('currentSlide');
 						private_methods.clearTimer();
 
 						if(typeof difference === 'undefined') {
@@ -208,18 +234,18 @@
 
 								nextSlide = inner.children().eq(difference);
 								
-								nextSlide.css({'z-index' : '1'}).fadeIn(settings.speed, function(){
+								nextSlide.css({'z-index' : '0'}).fadeIn(settings.speed, function(){
 
 									for(var i=0; i < difference; i++) {
 
-										inner.children(':first-child').css({'position' : 'absolute'}).hide().appendTo(inner);
+										inner.children(':first-child').css({'position' : settings.fixed == true ? 'fixed' : 'absolute'}).hide().appendTo(inner);
 
 									}
 
 									$(this).css({
 
-										'position' : 'relative',
-										'z-index' : '0'
+										'position' : settings.fixed == true ? 'fixed' : 'relative',
+										'z-index' : '-1'
 
 									});
 
@@ -316,10 +342,10 @@
 
 								}
 
-								inner.children(':first-child').css({'position' : 'absolute', 'z-index' : '1'}).fadeIn(settings.speed, function(){
+								inner.children(':first-child').css({'position' : settings.fixed == true ? 'fixed' : 'relative', 'z-index' : '0'}).fadeIn(settings.speed, function(){
 
-									inner.children().not($(this)).css({'position' : 'absolute', 'z-index' : '1'}).hide();
-									inner.children(':first-child').css({'position' : 'relative', 'z-index' : '0'});
+									inner.children().not($(this)).css({'position' : settings.fixed == true ? 'fixed' : 'absolute', 'z-index' : '0'}).hide();
+									inner.children(':first-child').css({'position' : settings.fixed == true ? 'fixed' : 'relative', 'z-index' : '-1'});
 									private_methods.setTimer();
 
 								});
@@ -380,7 +406,7 @@
 
 					if (settings.transition == 'fade' && settings.visibleSlides > 1) {
 
-						console.log('[Zizzi Fluid Slider] - You are not allowed more than 1 visible slide with fade! Shit happens! :(');
+						console.log('[Banana Tree Fluid Slider] - You are not allowed more than 1 visible slide with fade! Shit happens! :(');
 						self.data('visibleSlides', 1);
 
 					}
@@ -398,7 +424,7 @@
 
 					slides.show(0, function(){
 						
-						settings.transition == 'fade' ? slides.css({'position': 'absolute', 'z-index' : '1', 'top' : '0', 'left' : '0'}).hide().first().css({'position' : 'relative', 'display' : 'block', 'z-index' : '0'}) : '';
+						settings.transition == 'fade' ? slides.css({'position': settings.fixed == true ? 'fixed' : 'absolute', 'z-index' : '1', 'top' : '0', 'left' : '0'}).hide().first().css({'position' : settings.fixed == true ? 'fixed' : 'relative', 'display' : 'block', 'z-index' : '0'}) : '';
 
 						inner.css({
 
@@ -508,7 +534,7 @@
 
 			} else {
 
-				console.log('[Zizzi Fluid Slider] - ' + options + ' is not a defined method :(');
+				console.log('[Fluid Slider] - ' + options + ' is not a defined method :(');
 
 			}
 
