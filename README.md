@@ -14,6 +14,8 @@ Here's a list of options with all their defualt values:
 	pauseOnHover : false
 	trans_callback : null
 	load_callback : null
+	adjustWidth : true
+	fixed : false
 
 Implementation:
 
