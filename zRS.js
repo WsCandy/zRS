@@ -75,12 +75,6 @@
 
 						}
 
-						if(settings.adjustWidth == false && settings.transition != 'fade') {
-
-							throw 'You need to use fade with no width adjust!';
-
-						}
-
 					}
 
 					catch(error) {
@@ -149,20 +143,6 @@
 							});
 
 						}
-
-					} else {
-
-						if(inner.width() < slides.width()) {
-
-						slides.css({
-
-							'left' : '50%',
-							'margin-left' : '-' + slides.width() / 2 + 'px'
-
-						});
-							
-						}
-
 					}
 
 				},
@@ -406,7 +386,7 @@
 
 					if (settings.transition == 'fade' && settings.visibleSlides > 1) {
 
-						console.log('[Banana Tree Fluid Slider] - You are not allowed more than 1 visible slide with fade! Shit happens! :(');
+						console.log('[Fluid Slider] - You are not allowed more than 1 visible slide with fade! Shit happens! :(');
 						self.data('visibleSlides', 1);
 
 					}
