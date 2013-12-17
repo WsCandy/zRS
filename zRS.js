@@ -3,7 +3,6 @@
 	$.fn.zRS = function(options, param) {
 
 		var self = this;
-		var timer;
 
 		this.each(function(i) {
 
@@ -30,13 +29,15 @@
 			if(typeof(options) == 'object') {
 				
 				self.data('settings', settings);
+				self.data('self', self);
 				self.data('savedSettings', settings.delay);
 				self.data('visibleSlides', settings.visibleSlides);
 
 			} else {
 
 				settings = self.data('settings');
-				settings.delay = self.data('savedSettings');			
+				settings.delay = self.data('savedSettings');
+				self = self.data('self');
 			}
 
 			var slides = self.children().children('.carousel').size() > 0 ? self.children('.inner-slider').children().children() : self.children('.inner-slider').children(),
@@ -65,7 +66,7 @@
 
 							}
 
-							timer = settings.delay > 0 ? setInterval(public_methods.transition, settings.delay, 'next') : null;
+							settings.delay > 0 ? public_methods.resume() : null;
 
 						} else {
 
@@ -143,6 +144,19 @@
 							});
 
 						}
+					} else {
+
+						if(inner.width() <= slides.width()) {
+
+							slides.css({
+
+								'left' : '50%',
+								'margin-left' : '-' + slides.width() / 2 + 'px'
+
+							});
+							
+						}
+
 					}
 
 				},
@@ -158,7 +172,8 @@
 					} else {
 
 						currentSlide = self.data('currentSlide') == undefined ? 0 : self.data('currentSlide');
-						private_methods.clearTimer();
+						
+						public_methods.pause();
 
 						if(typeof difference === 'undefined') {
 
@@ -206,7 +221,7 @@
 
 									$(this).clearQueue();
 
-									private_methods.setTimer();
+									public_methods.resume();
 
 								});
 
@@ -214,7 +229,7 @@
 
 								nextSlide = inner.children().eq(difference);
 								
-								nextSlide.css({'z-index' : '0'}).fadeIn(settings.speed, function(){
+								nextSlide.css({'z-index' : '1'}).fadeIn(settings.speed, function(){
 
 									for(var i=0; i < difference; i++) {
 
@@ -225,11 +240,11 @@
 									$(this).css({
 
 										'position' : settings.fixed == true ? 'fixed' : 'relative',
-										'z-index' : '-1'
+										'z-index' : '0'
 
 									});
 
-									private_methods.setTimer();
+									public_methods.resume();
 
 								});
 
@@ -261,7 +276,7 @@
 
 									$(this).clearQueue();
 
-									private_methods.setTimer();
+									public_methods.resume();
 
 								});
 
@@ -310,7 +325,7 @@
 
 									$(this).clearQueue();
 
-									private_methods.setTimer();
+									public_methods.resume();
 
 								});
 
@@ -322,11 +337,11 @@
 
 								}
 
-								inner.children(':first-child').css({'position' : settings.fixed == true ? 'fixed' : 'relative', 'z-index' : '0'}).fadeIn(settings.speed, function(){
+								inner.children(':first-child').css({'position' : settings.fixed == true ? 'fixed' : 'absolute', 'z-index' : '2'}).fadeIn(settings.speed, function(){
 
 									inner.children().not($(this)).css({'position' : settings.fixed == true ? 'fixed' : 'absolute', 'z-index' : '0'}).hide();
-									inner.children(':first-child').css({'position' : settings.fixed == true ? 'fixed' : 'relative', 'z-index' : '-1'});
-									private_methods.setTimer();
+									inner.children(':first-child').css({'position' : settings.fixed == true ? 'fixed' : 'relative', 'z-index' : '1'});
+									public_methods.resume();
 
 								});
 
@@ -358,7 +373,7 @@
 
 									$(this).clearQueue();
 
-									private_methods.setTimer();
+									public_methods.resume();
 
 								});
 
@@ -375,6 +390,19 @@
 						settings.pager.children('a').removeClass().eq(self.data('currentSlide')).addClass('active');
 
 					}
+
+				},
+
+				pause : function(){
+
+					window.clearTimeout(self.timer);
+
+				},
+
+				resume : function(){
+
+					public_methods.pause();
+					self.timer = window.setTimeout(public_methods.transition, settings.delay, 'next');
 
 				}
 
@@ -404,7 +432,7 @@
 
 					slides.show(0, function(){
 						
-						settings.transition == 'fade' ? slides.css({'position': settings.fixed == true ? 'fixed' : 'absolute', 'z-index' : '1', 'top' : '0', 'left' : '0'}).hide().first().css({'position' : settings.fixed == true ? 'fixed' : 'relative', 'display' : 'block', 'z-index' : '0'}) : '';
+						settings.transition == 'fade' ? slides.css({'position': settings.fixed == true ? 'fixed' : 'absolute', 'z-index' : '0', 'top' : '0'}).hide().first().css({'position' : settings.fixed == true ? 'fixed' : 'relative', 'display' : 'block', 'z-index' : '1'}) : '';
 
 						inner.css({
 
@@ -482,31 +510,13 @@
 
 					}
 
-				},
-
-				setTimer : function(){
-
-					window.clearInterval(timer);
-
-					if(settings.delay > 0 && typeof(options) == 'object') {
-
-						timer = setInterval(public_methods.transition, settings.delay, 'next');
-
-					}
-
-				},
-
-				clearTimer : function(){
-
-					window.clearInterval(timer);
-
 				}
 
 			}
 
 			if(public_methods[options]) {
 
-				return public_methods[options].call(this, param);
+				return public_methods[options].call(self, param);
 
 			} else if(typeof(options) == 'object'){
 
@@ -528,13 +538,13 @@
 
 				self.mouseover(function(){
 
-					private_methods.clearTimer();
+					public_methods.pause();
 
 				});
 
 				self.mouseleave(function(){
 
-					private_methods.setTimer();
+					public_methods.resume();
 
 				});
 
