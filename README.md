@@ -34,4 +34,14 @@ Use the following HTML structure when implementing the slider to your webpage.
 		</div>
 	</div>
 
-I'll add more at some point... 
+Basic Implementation :
+
+	$('.slider').zRS({
+
+		speed : 1000,
+		delay: 6000,
+		transition: 'fade'
+
+	});
+
+Some options aren't compatable with one another, make sure you check the console if things aren't working correctly, you will get an error message that gives you more insight :)
