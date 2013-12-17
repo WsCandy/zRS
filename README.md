@@ -18,6 +18,7 @@ Here's a list of options with all their defualt values:
 	fixed : false
 
 Implementation:
+---
 
 Use the following HTML structure when implementing the slider to your webpage.
 
@@ -35,6 +36,7 @@ Use the following HTML structure when implementing the slider to your webpage.
 	</div>
 
 Basic Implementation :
+---
 
 	$('.slider').zRS({
 
@@ -45,3 +47,28 @@ Basic Implementation :
 	});
 
 Some options aren't compatable with one another, make sure you check the console if things aren't working correctly, you will get an error message that gives you more insight :)
+
+Methods
+---
+
+zRS has a few methods that you can call in order to manipulate the plugin once it's up and running, they are as follows:
+
+	$('.slider').zRS('transition', 'next'); // These speak for themselves...
+	$('.slider').zRS('transition', 'prev'); // These speak for themselves...
+
+	$('.slider').zRS('pause'); // As do these...
+	$('.slider').zRS('resume'); // As do these...
+
+	$('.slider').zRS('slideWidthAdjust'); // Forces the plugin to update it's height and width calculations
+
+	$('.slider').zRS('setVisibleSlides', 2); // Set the number of visible slides
+
+Bind them to whatever events you need to!
+
+
+
+
+
+
+
+
