@@ -89,8 +89,8 @@
 				setVisibleSlides : function(visibleSlides) {
 
 					settings.visibleSlides = visibleSlides;
-
 					self.data('visibleSlides', settings.visibleSlides);
+					public_methods.slideWidthAdjust();
 
 				},
 
