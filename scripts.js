@@ -17,8 +17,7 @@ $(document).ready(function(){
 		delay: 5000,
 		transition: 'fade',
 		pager : $('.pager'),
-		pauseOnHover : true,
-		visibleSlides : 2
+		pauseOnHover : true
 
 	});
 

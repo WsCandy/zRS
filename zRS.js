@@ -432,7 +432,7 @@
 
 					slides.show(0, function(){
 						
-						settings.transition == 'fade' ? slides.css({'position': settings.fixed == true ? 'fixed' : 'absolute', 'z-index' : '0', 'top' : '0'}).hide().first().css({'position' : settings.fixed == true ? 'fixed' : 'relative', 'display' : 'block', 'z-index' : '1'}) : '';
+						settings.transition == 'fade' ? slides.css({'position': settings.fixed == true ? 'fixed' : 'absolute', 'z-index' : '0', 'top' : '0', 'left' : settings.adjustWidth == true ? '0' : '50%'}).hide().first().css({'position' : settings.fixed == true ? 'fixed' : 'relative', 'display' : 'block', 'z-index' : '1'}) : '';
 
 						inner.css({
 
@@ -484,7 +484,8 @@
 					settings.pager.css({
 
 						'width' : pagerWidth * numberOfSlides + 'px',
-						'margin-left' : '-' + (pagerWidth * numberOfSlides) /2 + 'px'
+						'margin-left' : '-' + (pagerWidth * numberOfSlides) /2 + 'px',
+						'z-index' : '5'
 
 					});
 
