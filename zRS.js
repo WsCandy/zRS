@@ -30,13 +30,10 @@
 				
 				self.data('settings', settings);
 				self.data('self', self);
-				self.data('savedSettings', settings.delay);
-				self.data('visibleSlides', settings.visibleSlides);
 
 			} else {
 
 				settings = self.data('settings');
-				settings.delay = self.data('savedSettings');
 				self = self.data('self');
 			}
 
@@ -96,8 +93,8 @@
 
 				slideWidthAdjust : function() {
  					var carousel = self.children().children('.carousel');
-					var carouselWidth = numberOfSlides * inner.width() / self.data('visibleSlides');
-					var carouselHeight = numberOfSlides * inner.outerHeight() / self.data('visibleSlides');
+					var carouselWidth = numberOfSlides * inner.width() / settings.visibleSlides;
+					var carouselHeight = numberOfSlides * inner.outerHeight() / settings.visibleSlides;
 
 					if(settings.adjustWidth == true) {
 
@@ -108,7 +105,7 @@
 
 						}).css({
 
-							'width' : self.data('visibleSlides') == 1 && settings.transition != 'vertical' ? '+='+numberOfSlides * settings.slideSpacing + 'px' : '+=' + 1 + 'px'
+							'width' : settings.visibleSlides == 1 && settings.transition != 'vertical' ? '+='+numberOfSlides * settings.slideSpacing + 'px' : '+=' + 1 + 'px'
 
 						});					
 
@@ -127,7 +124,7 @@
 
 							slides.css({
 
-								'width' : self.data('visibleSlides') == 1 ? carouselWidth * widthValue + 'px' : (carouselWidth * widthValue) - settings.slideSpacing + 'px',
+								'width' : settings.visibleSlides == 1 ? carouselWidth * widthValue + 'px' : (carouselWidth * widthValue) - settings.slideSpacing + 'px',
 								'margin-right' : settings.slideSpacing /2 + 'px',
 								'margin-left' : settings.slideSpacing /2 + 'px'
 
@@ -139,7 +136,7 @@
 
 							inner.css({
 
-								'height' : self.data('visibleSlides') == 1 ? slides.outerHeight(true) * self.data('visibleSlides') + 'px' : (slides.outerHeight(true) + settings.slideSpacing) * self.data('visibleSlides')
+								'height' : settings.visibleSlides == 1 ? slides.outerHeight(true) * settings.visibleSlides + 'px' : (slides.outerHeight(true) + settings.slideSpacing) * settings.visibleSlides
 
 							});
 
@@ -402,7 +399,10 @@
 				resume : function(){
 
 					public_methods.pause();
-					self.timer = window.setTimeout(public_methods.transition, settings.delay, 'next');
+					
+					settings.delay > 0 ? self.timer = window.setTimeout(public_methods.transition, settings.delay, 'next') : '';
+
+					
 
 				}
 
