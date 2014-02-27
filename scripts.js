@@ -24,7 +24,7 @@ $(document).ready(function(){
 	$('.slider3').zRS({
 
 		speed : 1000,
-		delay: 4000,
+		delay: 0,
 		transition: 'fade',
 		pauseOnHover : true,
 		visibleSlides : 1,

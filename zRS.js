@@ -2,9 +2,9 @@
 
 	$.fn.zRS = function(options, param) {
 
-		var self = this;
+		return this.each(function(i) {
 
-		this.each(function(i) {
+			var self = $(this);
 
 			var defaults = {
 
@@ -415,7 +415,7 @@
 					if (settings.transition == 'fade' && settings.visibleSlides > 1) {
 
 						console.log('[Fluid Slider] - You are not allowed more than 1 visible slide with fade! Shit happens! :(');
-						self.data('visibleSlides', 1);
+						settings.visibleSlides = 1;
 
 					}
 
